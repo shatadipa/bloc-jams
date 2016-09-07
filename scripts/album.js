@@ -52,7 +52,7 @@ var albumArijit = {
 var createSongRow = function (songNumber, songName, songLength) {
     var template =
         '<tr class="album-view-song-item">'
-        + '  <td class="song-item-number">' + songNumber + '</td>'
+        + '  <td class="song-item-number" data-song-number="'+songNumber+'">' + songNumber + '</td>'
         + '  <td class="song-item-title">' + songName + '</td>'
         + '  <td class="song-item-duration">' + songLength + '</td>'
         + '</tr>'
@@ -85,13 +85,40 @@ var setCurrentAlbum = function (album) {
 
 };
 
+var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
+var songRows= document.getElementsByClassName("album-view-song-item");
+var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
+
+
 window.onload = function () {
     var albums = [albumPicasso, albumMarconi, albumArijit];
-    
+
     //set the first album to 0.
     var currentSelection = 0;
     setCurrentAlbum(albums[currentSelection]);
-    
+
+
+    songListContainer.addEventListener('mouseover', function (event) {
+        //delegating from table to td.
+        //event.target is td.parent is tr.Take that tr.Put the 
+        console.log(event.target);
+
+        if (event.target.parentElement.className === 'album-view-song-item') {
+            event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
+        }
+    });
+
+    for(var i=0;i<songRows.length;i++){
+        songRows[i].addEventListener("mouseleave",function(){
+            this.children[0].innerHTML = this.children[0].getAttribute("data-song-number");
+        });
+    }
+
+
+
+
+
+
     var albumCover = document.getElementsByClassName("album-cover-art")[0];
     albumCover.addEventListener("click", function () {
         currentSelection++;
