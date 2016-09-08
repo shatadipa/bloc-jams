@@ -91,12 +91,17 @@ var setCurrentAlbum = function (album) {
 //get the nearest parent with given classname
 var findParentByClassName = function (element, classname) {
     var parent = element.parentElement;
+    if(!parent){
+        alert('No parent found');
+        return;
+    }
     while (parent) {
         if (parent.getAttribute("class") === classname) {
             return parent;
         }
         parent = parent.parentElement;
     }
+    alert('No parent found with that class name');
 };
 
 var getSongItem = function (element) {
